@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "config": {
-    "app_to_debug": "excel",
+    "app_to_debug": "powerpoint",
     "app_type_to_debug": "desktop",
     "dev_server_port": 3000
   },
@@ -25,8 +25,10 @@
   },
   "dependencies": {
     "@fluentui/react": "^8.52.3",
+    "@microsoft/office-js": "^1.1.94",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "shiki": "^1.22.1"
   },
   "devDependencies": {
     "@types/office-js": "^1.0.256",
@@ -36,8 +38,11 @@
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-react-swc": "^3.0.0",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.38.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-office-addins": "^2.1.5",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "office-addin-cli": "^1.5.5",
@@ -46,6 +51,9 @@
     "office-addin-lint": "^2.2.5",
     "office-addin-manifest": "^1.12.3",
     "office-addin-prettier-config": "^1.2.0",
+    "postcss": "^8.4.47",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.14",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
     "vite-plugin-eslint": "^1.8.1",
