@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { BundledLanguage, BundledThemeInfo, bundledThemesInfo, codeToTokens } from "shiki";
+import { BundledLanguage, BundledThemeInfo, bundledThemesInfo, codeToTokens } from "shiki/bundle/full";
 import { useState } from "react";
 import LanguageAutocompleteSelector from "./LanguageAutocompleteSelector";
 import ThemeAutocompleteSelector from "./ThemeAutocompleteSelector";
@@ -51,10 +51,11 @@ export function HighlightingSection() {
 
         const { tokens } = await codeToTokens(code, {
           lang: language,
-          theme: theme,
+          theme: theme.id,
         });
 
         firstShape.textFrame.textRange.text = code;
+        // firstShape.textFrame.textRange.paragraphFormat.bulletFormat.visible = false;
         await tokens.forEach(async (token) => {
           token.forEach(async (themedToken) => {
             const offset = themedToken.offset;
@@ -70,7 +71,7 @@ export function HighlightingSection() {
         await context.sync();
       });
     } catch (error) {
-      setError((error as Error).message);
+      setError((error as Error).stack?.split("\n")[0] ?? "Unknown error");
     }
   };
 
@@ -84,7 +85,7 @@ export function HighlightingSection() {
 
         const { tokens } = await codeToTokens(code, {
           lang: language,
-          theme: theme,
+          theme: theme.id,
         });
         await tokens.forEach(async (token) => {
           token.forEach(async (themedToken) => {
@@ -112,7 +113,7 @@ export function HighlightingSection() {
         <ThemeAutocompleteSelector value={theme} onChange={(theme) => setTheme(theme)} />
       </div>
       <textarea
-        className="font-mono text-xs mt-4 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full max-h-[400px]"
+        className="font-mono dark:bg-neutral-900 dark:text-neutral-200 text-xs mt-4 px-3 py-2 border border-gray-300 dark:border-neutral-700 rounded-md shadow-sm w-full max-h-[400px]"
         placeholder="Enter your code here"
         rows={100}
         value={code}
@@ -138,6 +139,9 @@ export function HighlightingSection() {
           Insert Highlight Code Text Box
         </button>
       )}
+      <span className="mt-4 font-mono dark:text-orange-400 text-orange-600">
+        {language} {theme.id}
+      </span>
       {numberOfSelectedShapes > 1 && (
         <span className="mt-4 font-mono dark:text-orange-400 text-orange-600">Select only one shape at a time</span>
       )}
