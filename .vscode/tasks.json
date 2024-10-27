@@ -38,11 +38,8 @@
       "label": "Debug: PowerPoint Desktop",
       "type": "npm",
       "script": "start:desktop -- --app powerpoint",
-      "presentation": {
-        "clear": true,
-        "panel": "dedicated",
-      },
-      "problemMatcher": []
+      "problemMatcher": [],
+      "detail": "office-addin-debugging start src/manifest.xml desktop"
     },
     {
       "label": "Debug: Word Desktop",

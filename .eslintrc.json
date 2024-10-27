@@ -4,5 +4,9 @@
   ],
   "extends": [
     "plugin:office-addins/react"
-  ]
+  ],
+  "rules": {
+    "quotes": "off",
+    "@typescript-eslint/quotes": "off"
+  }
 }

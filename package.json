@@ -19,13 +19,15 @@
     "preview": "vite preview",
     "start": "office-addin-debugging start src/manifest.xml",
     "start:desktop": "office-addin-debugging start src/manifest.xml desktop",
-    "start:web": "office-addin-debugging start src/manifest.xml web",
+    "start:powerpoint": "office-addin-debugging start src/manifest.xml desktop --app powerpoint",
+    "start:word": "office-addin-debugging start src/manifest.xml desktop --app word",
     "stop": "office-addin-debugging stop src/manifest.xml",
     "validate": "office-addin-manifest validate src/manifest.xml"
   },
   "dependencies": {
     "@fluentui/react": "^8.52.3",
     "@microsoft/office-js": "^1.1.94",
+    "@prettier/sync": "^0.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "shiki": "^1.22.1"
