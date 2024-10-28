@@ -23,7 +23,8 @@ export default defineConfig(async ({mode}) => ({
       input: {
         "taskpane": "/taskpane/taskpane.html",
         "commands": "/commands/commands.html",
-        "privacy-policy": "/legal/privacy-policy.html"
+        "privacy-policy": "/legal/privacy-policy.html",
+        "support": "/legal/support.html"
       },
       external: ['regex'],
     },
