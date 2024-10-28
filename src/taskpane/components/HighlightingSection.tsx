@@ -1,16 +1,42 @@
+/* eslint-disable no-undef */
+// @ts-expect-error React is needed for JSX
 import * as React from "react";
 import { useEffect } from "react";
 import { BundledLanguage, BundledThemeInfo, bundledThemesInfo, codeToTokens } from "shiki/bundle/full";
 import { useState } from "react";
 import LanguageAutocompleteSelector from "./LanguageAutocompleteSelector";
 import ThemeAutocompleteSelector from "./ThemeAutocompleteSelector";
-
+import TextEditor from "./TextEditor";
 /* global PowerPoint */
 /* global Office */
 
+interface CachedPreferences {
+  language: BundledLanguage;
+  themeId: string;
+}
+
 export function HighlightingSection() {
-  const [language, setLanguage] = useState<BundledLanguage>("typescript");
-  const [theme, setTheme] = useState<BundledThemeInfo>(bundledThemesInfo[0]);
+  const [language, setLanguage] = useState<BundledLanguage>(() => {
+    const cached = localStorage.getItem("codeHighlightPrefs");
+    if (cached) {
+      const prefs = JSON.parse(cached) as CachedPreferences;
+      return prefs.language;
+    }
+    return "typescript";
+  });
+
+  const [theme, setTheme] = useState<BundledThemeInfo>(() => {
+    const cached = localStorage.getItem("codeHighlightPrefs");
+    if (cached) {
+      const prefs = JSON.parse(cached) as CachedPreferences;
+      const savedTheme = bundledThemesInfo.find((t) => t.id === prefs.themeId);
+      return savedTheme || bundledThemesInfo[0];
+    }
+    return bundledThemesInfo[0];
+  });
+
+  const [newTextBoxHeight, setNewTextBoxHeight] = useState(100);
+  const [newTextBoxWidth, setNewTextBoxWidth] = useState(400);
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [numberOfSelectedShapes, setNumberOfSelectedShapes] = useState(0);
@@ -37,6 +63,14 @@ export function HighlightingSection() {
     };
   }, []);
 
+  useEffect(() => {
+    const prefs: CachedPreferences = {
+      language,
+      themeId: theme.id,
+    };
+    localStorage.setItem("codeHighlightPrefs", JSON.stringify(prefs));
+  }, [language, theme]);
+
   const highlightAndSetCode = async () => {
     setError(null);
     try {
@@ -53,7 +87,7 @@ export function HighlightingSection() {
           lang: language,
           theme: theme.id,
         });
-
+        firstShape.textFrame.textRange.font.name = "Monaco";
         firstShape.textFrame.textRange.text = code;
         // firstShape.textFrame.textRange.paragraphFormat.bulletFormat.visible = false;
         await tokens.forEach(async (token) => {
@@ -81,7 +115,11 @@ export function HighlightingSection() {
       await PowerPoint.run(async (context) => {
         const slide = context.presentation.getSelectedSlides().getItemAt(0);
         const textBox = slide.shapes.addTextBox(code);
+        textBox.height = 100;
+        textBox.width = 400;
+        textBox.textFrame.textRange.font.name = "Monaco";
         await context.sync();
+        slide.setSelectedShapes([textBox.id]);
 
         const { tokens } = await codeToTokens(code, {
           lang: language,
@@ -107,21 +145,12 @@ export function HighlightingSection() {
   };
 
   return (
-    <div className="flex flex-col h-screen p-4">
+    <div className="flex flex-col h-screen p-4 gap-4">
       <div className="flex flex-row gap-2">
         <LanguageAutocompleteSelector value={language} onChange={(lang) => setLanguage(lang)} />
         <ThemeAutocompleteSelector value={theme} onChange={(theme) => setTheme(theme)} />
       </div>
-      <textarea
-        className="font-mono dark:bg-neutral-900 dark:text-neutral-200 text-xs mt-4 px-3 py-2 border border-gray-300 dark:border-neutral-700 rounded-md shadow-sm w-full max-h-[400px]"
-        placeholder="Enter your code here"
-        rows={100}
-        value={code}
-        onChange={(e) => {
-          setError(null);
-          setCode(e.target.value);
-        }}
-      />
+      <TextEditor className="min-h-[50vh]" value={code} onValueChange={(value) => setCode(value ?? "")} />
       {error && <span className="mt-4 font-mono dark:text-red-400 text-red-600">{error}</span>}
       {numberOfSelectedShapes === 1 && (
         <button
@@ -139,9 +168,45 @@ export function HighlightingSection() {
           Insert Highlight Code Text Box
         </button>
       )}
-      <span className="mt-4 font-mono dark:text-orange-400 text-orange-600">
-        {language} {theme.id}
-      </span>
+      {numberOfSelectedShapes === 0 && (
+        <div className="flex flex-col gap-2">
+          <span className="font-mono dark:text-zinc-400 text-zinc-600 text-xs">New Code Text Box Dimensions</span>
+          <div className="flex flex-row gap-2">
+            <div className="flex items-center gap-2">
+              <label htmlFor="height" className="font-mono dark:text-zinc-400 text-zinc-600 text-xs">
+                height:
+              </label>
+              <input
+                id="height"
+                type="number"
+                min={10}
+                value={newTextBoxHeight}
+                onChange={(e) => setNewTextBoxHeight(Number(e.target.value))}
+                className="w-20 px-2 py-1 text-xs font-mono rounded border border-gray-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-100"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <label htmlFor="width" className="font-mono dark:text-zinc-400 text-zinc-600 text-xs">
+                width:
+              </label>
+              <input
+                id="width"
+                type="number"
+                min={10}
+                value={newTextBoxWidth}
+                onChange={(e) => setNewTextBoxWidth(Number(e.target.value))}
+                className="w-20 px-2 py-1 text-xs font-mono rounded border border-gray-200 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-100"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="flex flex-row gap-2">
+        <div className="flex flex-col gap-1">
+          <span className="font-mono dark:text-zinc-400 text-zinc-600 text-xs">{`language: ${language}`}</span>
+          <span className="font-mono dark:text-zinc-400 text-zinc-600 text-xs">{`theme: ${theme.id}`}</span>
+        </div>
+      </div>
       {numberOfSelectedShapes > 1 && (
         <span className="mt-4 font-mono dark:text-orange-400 text-orange-600">Select only one shape at a time</span>
       )}

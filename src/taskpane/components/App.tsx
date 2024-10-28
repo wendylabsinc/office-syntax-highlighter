@@ -1,6 +1,6 @@
 import * as React from "react";
 import Progress from "./Progress";
-import logo from "../../../assets/logo-filled.png";
+import logo from "../../../assets/Logo-32.png";
 import { HighlightingSection } from "./HighlightingSection";
 
 interface AppProps {

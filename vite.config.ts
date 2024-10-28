@@ -12,9 +12,10 @@ async function getHttpsOptions() {
 // https://vitejs.dev/config/
 export default defineConfig(async ({mode}) => ({
   plugins: [react(), officeAddin({
-    devUrl: "https://localhost:3000",
-    prodUrl: "https://www.contoso.com" // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
-  })],
+      devUrl: "https://localhost:3000",
+      prodUrl: "https://www.contoso.com"
+    })
+  ],
   root: "src",
   build: {
     rollupOptions: {
@@ -22,6 +23,7 @@ export default defineConfig(async ({mode}) => ({
         "taskpane": "/taskpane/taskpane.html",
         "commands": "/commands/commands.html",
       },
+      external: ['regex'],
     },
     outDir: "../dist",
     emptyOutDir: true

@@ -8,7 +8,7 @@ interface ThemeAutocompleteSelectorProps {
 
 export default function ThemeAutocompleteSelector({ value, onChange }: ThemeAutocompleteSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState(value.displayName);
+  const [searchValue, setSearchValue] = useState(value.id);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const filteredThemes = bundledThemesInfo.filter((theme) =>
@@ -44,8 +44,8 @@ export default function ThemeAutocompleteSelector({ value, onChange }: ThemeAuto
           className="py-3 ps-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400"
           type="text"
           role="combobox"
-          name="language"
-          title="Language"
+          name="theme"
+          title="Theme"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onFocus={() => setIsOpen(true)}
@@ -54,7 +54,7 @@ export default function ThemeAutocompleteSelector({ value, onChange }: ThemeAuto
         <button
           className="absolute top-1/2 end-3 -translate-y-1/2"
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle language selector"
+          aria-label="Toggle theme selector"
         >
           <svg
             className="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500"
@@ -87,8 +87,8 @@ export default function ThemeAutocompleteSelector({ value, onChange }: ThemeAuto
               tabIndex={index}
             >
               <div className="flex justify-between items-center w-full">
-                <span>{theme.displayName}</span>
-                {theme.displayName === searchValue && (
+                <span>{theme.id}</span>
+                {theme.id === searchValue && (
                   <svg
                     className="shrink-0 size-3.5 text-blue-600 dark:text-blue-500"
                     xmlns="http://www.w3.org/2000/svg"

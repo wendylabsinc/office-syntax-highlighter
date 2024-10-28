@@ -26,6 +26,8 @@ export default function LanguageAutocompleteSelector({ value, onChange }: Langua
       e.preventDefault();
       if (filteredLanguages.length > 0) {
         handleSelect(filteredLanguages[selectedIndex]);
+      } else {
+        handleSelect("javascript" as BundledLanguage);
       }
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -49,6 +51,14 @@ export default function LanguageAutocompleteSelector({ value, onChange }: Langua
           onChange={(e) => setSearchValue(e.target.value as BundledLanguage)}
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
+          onBlur={() => {
+            setTimeout(() => {
+              if (filteredLanguages.length === 0) {
+                handleSelect("javascript" as BundledLanguage);
+              }
+              setIsOpen(false);
+            }, 200);
+          }}
         />
         <button
           className="absolute top-1/2 end-3 -translate-y-1/2"

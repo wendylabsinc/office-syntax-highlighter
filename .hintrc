@@ -8,6 +8,9 @@
       {
         "aria-required-attr": "off"
       }
-    ]
+    ],
+    "typescript-config/consistent-casing": "off",
+    "typescript-config/strict": "off",
+    "meta-viewport": "off"
   }
 }
