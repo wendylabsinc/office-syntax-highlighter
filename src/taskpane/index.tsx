@@ -9,7 +9,7 @@ initializeIcons();
 
 let isOfficeInitialized = false;
 
-const title = "Contoso Task Pane Add-in";
+const title = "Office Syntax Highlighter Task Pane Add-in";
 
 const render = (Component: typeof App) => {
   createRoot(document.getElementById("container") as HTMLElement).render(
