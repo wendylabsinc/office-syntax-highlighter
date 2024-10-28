@@ -1,13 +1,20 @@
-name: Build and Deploy to GitHub Pages
+name: Build and Deploy
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write      # This is required for actions/checkout and pushing to gh-pages
+      pages: write        # This is required for deploying to GitHub Pages
+      id-token: write     # This is required for GitHub Pages authentication
 
     steps:
       # Checkout the repository
@@ -18,7 +25,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '22'
 
       # Install dependencies and build
       - name: Install dependencies
