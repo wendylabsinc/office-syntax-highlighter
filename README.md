@@ -4,7 +4,7 @@ This is a template that uses [Shiki](https://github.com/shikijs/shiki) to highli
 
 Use it like so: 
 
-![Highlighting Section](.main_screenshot.png)
+![Highlighting Section](main_screenshot.png)
 
 This is a template for developing an [Office.JS](https://learn.microsoft.com/en-us/office/dev/add-ins/) Excel add-in with **Vite** and **React 18**. The main advantage of using this template is a much faster development cycle. The development server starts in just 2-3 seconds and hot-reloaded changes are near instant.
 
