@@ -11,6 +11,7 @@ async function getHttpsOptions() {
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({mode}) => ({
+  base: process.env.NODE_ENV === 'production' ? '/office-syntax-highlighter/' : '/',
   plugins: [react(), officeAddin({
       devUrl: "https://localhost:3000",
       prodUrl: "https://www.contoso.com"
