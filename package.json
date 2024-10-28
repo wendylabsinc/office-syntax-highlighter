@@ -26,8 +26,9 @@
   },
   "dependencies": {
     "@fluentui/react": "^8.121.7",
-    "clsx": "^2.1.1",
     "@microsoft/office-js": "^1.1.94",
+    "@tailwindcss/typography": "^0.5.15",
+    "clsx": "^2.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "regex": "^4.3.3",
