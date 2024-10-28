@@ -18,8 +18,7 @@ jobs:
 
     steps:
       # Checkout the repository
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       # Set up Node.js (you can specify a specific Node version if needed)
       - name: Set up Node.js
@@ -29,15 +28,17 @@ jobs:
 
       # Install dependencies and build
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build project
+      - name: Build
         run: npm run build
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist # Adjust this if your build output is in a different directory
-          publish_branch: gh-pages # You can change this to any branch name for GitHub Pages
+          force_orphan: true  # This creates a fresh gh-pages branch each time
+          enable_jekyll: false  # This prevents GitHub from processing the site with Jekyll
