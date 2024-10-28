@@ -29,7 +29,9 @@ export default defineConfig(async ({mode}) => ({
       external: ['regex'],
     },
     outDir: "../dist",
-    emptyOutDir: true
+    emptyOutDir: true,
+    copyPublicDir: true  // Ensure public assets are copied
   },
+  publicDir: "../assets",  // Path to your assets directory relative to root
   server: mode !== "production" ? { https: await getHttpsOptions() } : {}
 }));
