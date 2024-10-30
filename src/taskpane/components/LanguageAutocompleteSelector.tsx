@@ -12,7 +12,9 @@ export default function LanguageAutocompleteSelector({ value, onChange }: Langua
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const languages = Object.keys(bundledLanguages) as BundledLanguage[];
-  const filteredLanguages = languages.filter((lang) => lang.toLowerCase().includes(searchValue.toLowerCase()));
+  const matchedLanguages = languages.filter((lang) => lang.toLowerCase().includes(searchValue.toLowerCase()));
+  const unmatchedLanguages = languages.filter((lang) => !lang.toLowerCase().includes(searchValue.toLowerCase()));
+  const sortedLanguages = [...matchedLanguages, ...unmatchedLanguages];
 
   const handleSelect = (language: BundledLanguage) => {
     setSearchValue(language);
@@ -24,14 +26,14 @@ export default function LanguageAutocompleteSelector({ value, onChange }: Langua
     if (!isOpen) return;
     if (e.key === "Enter" || e.key === "Tab") {
       e.preventDefault();
-      if (filteredLanguages.length > 0) {
-        handleSelect(filteredLanguages[selectedIndex]);
+      if (sortedLanguages.length > 0) {
+        handleSelect(sortedLanguages[selectedIndex]);
       } else {
         handleSelect("javascript" as BundledLanguage);
       }
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      setSelectedIndex((prev) => Math.min(prev + 1, filteredLanguages.length - 1));
+      setSelectedIndex((prev) => Math.min(prev + 1, sortedLanguages.length - 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setSelectedIndex((prev) => Math.max(prev - 1, 0));
@@ -53,7 +55,7 @@ export default function LanguageAutocompleteSelector({ value, onChange }: Langua
           onKeyDown={handleKeyDown}
           onBlur={() => {
             setTimeout(() => {
-              if (filteredLanguages.length === 0) {
+              if (sortedLanguages.length === 0) {
                 handleSelect("javascript" as BundledLanguage);
               }
               setIsOpen(false);
@@ -83,14 +85,14 @@ export default function LanguageAutocompleteSelector({ value, onChange }: Langua
 
       {isOpen && (
         <div className="absolute z-50 w-full max-h-72 p-1 bg-white border border-gray-200 rounded-lg overflow-y-auto dark:bg-neutral-900 dark:border-neutral-700">
-          {filteredLanguages.map((language, index) => (
+          {sortedLanguages.map((language, index) => (
             <div
               key={language}
               className={`cursor-pointer py-2 px-4 w-full text-sm text-gray-800 rounded-lg focus:outline-none ${
                 index === selectedIndex
                   ? "bg-gray-100 dark:bg-neutral-800"
                   : "hover:bg-gray-100 dark:hover:bg-neutral-800"
-              } dark:text-neutral-200`}
+              } dark:text-neutral-200 ${matchedLanguages.includes(language) ? "border-l-2 border-blue-500" : ""}`}
               onClick={() => handleSelect(language)}
               onMouseEnter={() => setSelectedIndex(index)}
               tabIndex={index}
