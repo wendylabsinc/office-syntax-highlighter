@@ -14,7 +14,7 @@ export default defineConfig(async ({mode}) => ({
   base: process.env.NODE_ENV === 'production' ? '/office-syntax-highlighter/' : '/',
   plugins: [react(), officeAddin({
       devUrl: "https://localhost:3000",
-      prodUrl: "https://wendylabsinc.github.io/office-syntax-highlighter/"
+      prodUrl: "https://office-syntax-highlighter.wendy.sh/"
     })
   ],
   root: "src",
