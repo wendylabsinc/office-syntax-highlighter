@@ -31,8 +31,8 @@ export default defineConfig(async ({mode}) => ({
     },
     outDir: "../dist",
     emptyOutDir: true,
-    copyPublicDir: true  // Ensure public assets are copied
+    copyPublicDir: true  // Ensures public directory is copied
   },
-  publicDir: "/assets",  // Path to your assets directory relative to root
+  publicDir: "../public",  // Change this to point to your public directory relative to root
   server: mode !== "production" ? { https: await getHttpsOptions() } : {}
 }));
