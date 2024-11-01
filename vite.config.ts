@@ -11,7 +11,7 @@ async function getHttpsOptions() {
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({mode}) => ({
-  base: process.env.NODE_ENV === 'production' ? '/office-syntax-highlighter/' : '/',
+  base: '/',
   plugins: [react(), officeAddin({
       devUrl: "https://localhost:3000",
       prodUrl: "https://office-syntax-highlighter.wendy.sh/"
@@ -24,7 +24,8 @@ export default defineConfig(async ({mode}) => ({
         "taskpane": "/taskpane/taskpane.html",
         "commands": "/commands/commands.html",
         "privacy-policy": "/legal/privacy-policy.html",
-        "support": "/legal/support.html"
+        "support": "/legal/support.html",
+        "index": "/index.html"
       },
       external: ['regex'],
     },
@@ -32,6 +33,6 @@ export default defineConfig(async ({mode}) => ({
     emptyOutDir: true,
     copyPublicDir: true  // Ensure public assets are copied
   },
-  publicDir: "../assets",  // Path to your assets directory relative to root
+  publicDir: "/assets",  // Path to your assets directory relative to root
   server: mode !== "production" ? { https: await getHttpsOptions() } : {}
 }));
