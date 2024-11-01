@@ -32,6 +32,15 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          BASE_URL: ${{ github.event.repository.name }}
+
+      # Copy additional assets if needed
+      - name: Copy additional assets
+        run: |
+          if [ -f "public/manifest.xml" ]; then
+            cp public/manifest.xml dist/
+          fi
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
