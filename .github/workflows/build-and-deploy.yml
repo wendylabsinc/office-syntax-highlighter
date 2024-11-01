@@ -41,6 +41,12 @@ jobs:
           if [ -f "public/manifest.xml" ]; then
             cp public/manifest.xml dist/
           fi
+          # Copy PNG files from root directory
+          cp *.png dist/ || true  # The '|| true' ensures the step doesn't fail if no PNGs exist
+          
+      # List contents for verification (optional)
+      - name: List dist contents
+        run: ls -la dist
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
